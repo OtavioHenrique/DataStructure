@@ -237,5 +237,5 @@ int main (int argc, char** argv) {
 
 
 	compare(&charQueue,&charStack);
-
+	printf("Git\n");
 }
