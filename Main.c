@@ -14,7 +14,6 @@ typedef struct {
 
 	int total;
 	Node* first;
-
 }Stack;
 
 void initStack(Stack* s){
@@ -31,7 +30,7 @@ Node* aloc(){
 	}
 }
 
-int empty(Stack* s) {
+int empty(Stack* s) { 
 
 	if(s->first == NULL)
 		return 1;
@@ -89,7 +88,6 @@ typedef struct {
 
 	int total;
 	Node* first;
-
 }Queue;
 
 void initQueue(Queue* f) {
@@ -104,6 +102,7 @@ int emptyQ(Queue* f) {
 	else 
 		return 0;
 }
+
 
 void insertQueue(Queue* f, char value){
 
@@ -160,15 +159,13 @@ void printQ(Queue* f){
 	}
 }
 
-void compare(Queue* f, Stack* s){
-	printf("Flag\n");
+void compare(Queue* f, Stack* s){ 
 	char a = '1'; 
 	char b = '1';
 	int cont=0,tot=0;
 
 	if(f->total == s->total) {
 		tot = s->total;
-		printf("Flag2: %d\n", tot);
 	 } else{
 	 	printf("Different\n");
 		return;
@@ -176,9 +173,6 @@ void compare(Queue* f, Stack* s){
 	while(cont < tot && a != '\0' && b != '\0') {
 		a = removeStack(s);
 		b = removeQueue(f);
-
-		printf("A: %c\n", a);
-		printf("B: %c\n", b);
 
 
 		if (a == b) {
@@ -217,25 +211,20 @@ int main (int argc, char** argv) {
 
 
 	
-	insertQueue(&charQueue, 'r');
-	insertQueue(&charQueue, 'o');
-	insertQueue(&charQueue, 'm');
 	insertQueue(&charQueue, 'a');
+	insertQueue(&charQueue, 'm');
+	insertQueue(&charQueue, 'o');
+	insertQueue(&charQueue, 'r');
 	printQ(&charQueue);
 
 	printf("\n");
 	printf("\n");
 	printf("\n");
 
-
-
-	printf("\n");
-	printf("\n");
-	printf("\n");
 	printf("Comparing:\n");
 	printf("\n");
 
 
 	compare(&charQueue,&charStack);
-	printf("Git\n");
+
 }
