@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct _node Node;
 
@@ -189,42 +190,67 @@ void compare(Queue* f, Stack* s){
 	}
 }
 
-int main (int argc, char** argv) {
+void writeStrings(Stack* s, Queue* f){
+	int i;
 
+	char w1[50];
+	char w2[50];
+
+	fflush(stdin);
+	printf("Enter with first word\n");
+	scanf("%s", w1);
+
+	printf("Enter with second word \n");
+	scanf("%s", w2);
+
+	int stringLen = strlen(w1);
+	int stringLen2 = strlen(w2);
+
+	for(i=0; i < stringLen; i++){
+		if(w1[i] != '\0') {
+		insertQueue(f,w1[i]);
+		}
+	}	
+
+	for(i=0; i < stringLen2; i++){
+		if(w2[i] != '\0') {
+		insertStack(s,w2[i]);
+		}
+	}		
+	
+	compare(f,s);
+
+
+}
+
+int main (int argc, char** argv) {
+	
 	Stack charStack;
 	Queue charQueue;
 
 	initStack(&charStack);
 	initQueue(&charQueue);
 
-	insertStack(&charStack, 'a');
-	insertStack(&charStack, 'm');
-	insertStack(&charStack, 'o');
-	insertStack(&charStack, 'r');
-	print(&charStack);
+	int x;
 
-	
+	do {
 
-	printf("\n");
-	printf("\n");
-	printf("\n");
-
-
-	
-	insertQueue(&charQueue, 'a');
-	insertQueue(&charQueue, 'm');
-	insertQueue(&charQueue, 'o');
-	insertQueue(&charQueue, 'r');
-	printQ(&charQueue);
-
-	printf("\n");
-	printf("\n");
-	printf("\n");
-
-	printf("Comparing:\n");
-	printf("\n");
+		printf("1. Check if is anagram\n");
+		printf("2. Credit\n");
+		scanf("%d", &x);
+		switch(x) {
+			case 1:
+				writeStrings(&charStack, &charQueue);
+				break;
+			case 2:
+				exit(0);
+				break;
+			default:
+				printf("Invalid\n");
+		}
 
 
-	compare(&charQueue,&charStack);
+
+	}while(x);
 
 }
