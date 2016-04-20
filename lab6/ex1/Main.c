@@ -87,7 +87,7 @@ void insertStack(Stack* s, char value){ //Function to insert char into stack
 char removeStack(Stack* s) { //Function to remove first node content from stack
 
 	if(s->first == NULL) {
-		printf("Empty Stack\n");
+		return 0;
 	} else { //Remove and return the content of the first node
 
 		Node* aux = s->first;
@@ -162,8 +162,7 @@ void insertQueue(Queue* f, char value){ //Method to insert char into queue
 char removeQueue(Queue* f){ //Remove char from queue
 
 	if(f->first == NULL) {
-		printf("Empty Queue\n");
-		return;
+		return 0;
 	} else {
 
 		Node* aux = f->first;
