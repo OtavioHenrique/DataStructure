@@ -1,28 +1,58 @@
+//This is a simple exercise to train data strcuctures(Queue and Stack).
+//Consist in check if 2 words (User Input) are palidrome. (A palindrome is a word, phrase, number, or other sequence of characters which reads the same backward or forward. Wikpedia)
+
+//First the software ask the user inputs and insert each string into a data structure (Queue and Stack), and call the compare method.
+//The compare method remove each character of the structs and compare each other. (Respecting the structs rules, stack = LIFO, queue = FIFO).
+//
+//				   Queue						Stack
+//				____________			 	 ____________                     
+//			   |	 C		|		      /	|     C      |                    
+//				------------			 /	 ------------						
+//			   | 	 I		|			/	|     I      |
+//				------------		   /  	 ------------
+//			   |	 V		|	C = C = OK 	|     V      |
+//				------------	/	     	 ------------						
+//			   |	 I		|  /			|     I      |
+//				------------   /		 	 ------------					
+//			   |	 C		| /				|     C      |
+//				------------			 	 ------------                       
+//
+//					FIFO                         LIFO
+//					
+//
+//
+//					
+//This exercise has many other more simple solutions.  
+//
+//
+//
+//Developed with <3 by Otavio Henrique
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 typedef struct _node Node;
 
-struct _node {
+struct _node { //Node struct for stack and queues
 
 	char content;
 	Node* prox;
 
 };
 
-typedef struct {
+typedef struct { //Stack struct
 
 	int total;
 	Node* first;
 }Stack;
 
-void initStack(Stack* s){
+void initStack(Stack* s){ // Starting Stack
 	s->total = 0;
 	s->first = NULL;
 }
 
-Node* aloc(){
+Node* aloc(){ //Function to allocate and return node struct
 	Node* new = malloc(sizeof(Node));
 	if(!new) {
 		printf("Out of Memory\n");
@@ -31,7 +61,7 @@ Node* aloc(){
 	}
 }
 
-int empty(Stack* s) { 
+int empty(Stack* s) { //Function to check if stack struct is empty
 
 	if(s->first == NULL)
 		return 1;
@@ -40,13 +70,13 @@ int empty(Stack* s) {
 
 }
 
-void insertStack(Stack* s, char value){ 
+void insertStack(Stack* s, char value){ //Function to insert char into stack
 
 	Node* new = aloc();
 	new->content = value;
 
-	if(empty(s)){
-		s->first = new;
+	if(empty(s)){ //Check if is empty
+		s->first = new; //Define first node
 	}else {
 		new->prox = s->first;
 		s->first = new;
@@ -54,11 +84,11 @@ void insertStack(Stack* s, char value){
 	s->total++;
 }
 
-char removeStack(Stack* s) {
+char removeStack(Stack* s) { //Function to remove first node content from stack
 
 	if(s->first == NULL) {
 		printf("Empty Stack\n");
-	} else {
+	} else { //Remove and return the content of the first node
 
 		Node* aux = s->first;
 		s->first = aux->prox;
@@ -68,16 +98,16 @@ char removeStack(Stack* s) {
 	}
 }
 
-void print(Stack* s){
+void print(Stack* s){ //Print Stack
 
-	if(empty(s)){
-		printf("Empty Stack\n");
+	if(empty(s)){ //Check if is empty
+		printf("Empty Stack\n"); 
 		return;
 	} else {
-		printf("Stack: \n\n\n");
-		Node* aux = s->first;
+		printf("Stack: \n\n\n"); 
+		Node* aux = s->first; 
 
-		while(aux != NULL) {
+		while(aux != NULL) { //Print
 			printf("%c\n", aux->content);
 			aux = aux->prox;
 		}
@@ -85,18 +115,18 @@ void print(Stack* s){
 }
 
 
-typedef struct {
+typedef struct { //Queue Struct
 
 	int total;
 	Node* first;
-}Queue;
+}Queue; 
 
-void initQueue(Queue* f) {
+void initQueue(Queue* f) { //  Starting Queue
 	f->total = 0;
 	f->first = NULL;
 }
 
-int emptyQ(Queue* f) {
+int emptyQ(Queue* f) { //Check if queue is empty
 
 	if(f->first == NULL) 
 		return 1;
@@ -105,7 +135,7 @@ int emptyQ(Queue* f) {
 }
 
 
-void insertQueue(Queue* f, char value){
+void insertQueue(Queue* f, char value){ //Method to insert char into queue
 
 	Node* new = aloc();
 	new->prox = NULL;
@@ -129,7 +159,7 @@ void insertQueue(Queue* f, char value){
 	f->total++;
 }
 
-char removeQueue(Queue* f){
+char removeQueue(Queue* f){ //Remove char from queue
 
 	if(f->first == NULL) {
 		printf("Empty Queue\n");
@@ -144,7 +174,7 @@ char removeQueue(Queue* f){
 	}
 }
 
-void printQ(Queue* f){
+void printQ(Queue* f){ //print queue
 
 	if(emptyQ(f)){
 		printf("Empty Queue\n");
@@ -160,7 +190,7 @@ void printQ(Queue* f){
 	}
 }
 
-void compare(Queue* f, Stack* s){ 
+void compare(Queue* f, Stack* s){ //Method to compare the content of the stack and queue
 	char a = '1'; 
 	char b = '1';
 	int cont=0,tot=0;
@@ -190,7 +220,7 @@ void compare(Queue* f, Stack* s){
 	}
 }
 
-void writeStrings(Stack* s, Queue* f){
+void writeStrings(Stack* s, Queue* f){ //Method to ask user inputs, insert into stack/queue and call compare method
 	int i;
 
 	char w1[50];
@@ -198,27 +228,27 @@ void writeStrings(Stack* s, Queue* f){
 
 	fflush(stdin);
 	printf("Enter with first word\n");
-	scanf("%s", w1);
+	scanf("%s", w1); //First word
 
 	printf("Enter with second word \n");
-	scanf("%s", w2);
+	scanf("%s", w2); //Second word
 
-	int stringLen = strlen(w1);
-	int stringLen2 = strlen(w2);
+	int stringLen = strlen(w1); //Taking the length of the string
+	int stringLen2 = strlen(w2); //Taking the length of the string
 
-	for(i=0; i < stringLen; i++){
+	for(i=0; i < stringLen; i++){ //Inserting first word into queue
 		if(w1[i] != '\0') {
 		insertQueue(f,w1[i]);
 		}
 	}	
 
-	for(i=0; i < stringLen2; i++){
-		if(w2[i] != '\0') {
+	for(i=0; i < stringLen2; i++){ //Inserting second word into queue
+ 		if(w2[i] != '\0') {
 		insertStack(s,w2[i]);
 		}
 	}		
 	
-	compare(f,s);
+	compare(f,s); //Calling the compare function
 
 
 }
@@ -228,15 +258,15 @@ int main (int argc, char** argv) {
 	Stack charStack;
 	Queue charQueue;
 
-	initStack(&charStack);
+	initStack(&charStack); 
 	initQueue(&charQueue);
 
 	int x;
 
-	do {
+	do { //Menu
 
 		printf("1. Check if is anagram\n");
-		printf("2. Credit\n");
+		printf("2. Exit\n");
 		scanf("%d", &x);
 		switch(x) {
 			case 1:
