@@ -1,3 +1,12 @@
+//This is a simple exercise to train data strcuctures(Queue and Stack).
+//Consist in search the letter that divides the word (User Input) in 2 equal word (Using data structures).
+
+//If the letter that divides the word are "" like the word "esse" the output should be " "
+//If removing the letter that divides the word and the 2 new words arent equal the output should be "NULL"
+
+//Developed with <3 by OtavioHenrique
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -269,7 +278,7 @@ int main (int argc, char** argv) {
 
 	int x;
 
-	do { //Menu
+	do { //Menu 
 
 		printf("1. Check if is anagram\n");
 		printf("2. Exit\n");
