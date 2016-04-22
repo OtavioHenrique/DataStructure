@@ -28,15 +28,15 @@ void insertTree (Tree* __tree, int __value) {
 	new->right = NULL; new->left = NULL; new->father = NULL;
 	
 	Node* father = NULL;
-	Node* sun = __tree->root;
+	Node* son = __tree->root;
 
-	while (sun != NULL) {
-		father = sun;
+	while (son != NULL) {
+		father = son;
 
-		if(__value > sun->value)
-			sun = sun->right;
+		if(__value > son->value)
+			son = son->right;
 		else 
-			sun = sun->left;
+			son = son->left;
 	}
 
 	new->father = father;
@@ -76,7 +76,7 @@ int purge(Tree* __tree, int value){
 	_remove(__tree, search(__tree, value));
 }
 
-int contSuns(Node* __node) {
+int contsons(Node* __node) {
 
 	int cont;
 
@@ -120,10 +120,10 @@ int _remove (Tree* __tree, Node* __node) {
 	if (__node == NULL)
 		return -1;
 
-	int suns = contSuns(__node);
+	int sons = contsons(__node);
 	Node* __father = searchFather(__tree, __node->value);
 
-	if (suns == 0) {
+	if (sons == 0) {
 		if (__node->value > __father->value) 
 			__father->right = NULL;
 		else
@@ -132,7 +132,7 @@ int _remove (Tree* __tree, Node* __node) {
 		__node == NULL;
 		__tree->total--;
 
-	} else if (suns == 1) {
+	} else if (sons == 1) {
 		
 		if (__node->value < __father->value){
 			if (__node->left != NULL) 
@@ -151,7 +151,7 @@ int _remove (Tree* __tree, Node* __node) {
 		
 	} else {
 
-		Node* aux = __node->left;
+		Node* aux = __node->right;
 
 		if (__node->value < __father->value){
 			__father->left = aux;
@@ -181,6 +181,78 @@ void inOrder(Node* __node) {
 
 }
 
+
+int _print_t(Node *tree, int is_left, int offset, int depth, char s[20][255])
+{
+    char b[20];
+    int width = 5;
+    int i = 0;
+
+    if (!tree) return 0;
+
+    sprintf(b, "(%03d)", tree->value);
+
+    int left  = _print_t(tree->left,  1, offset,                depth + 1, s);
+    int right = _print_t(tree->right, 0, offset + left + width, depth + 1, s);
+
+#ifdef COMPACT
+    for (i = 0; i < width; i++)
+        s[depth][offset + left + i] = b[i];
+
+    if (depth && is_left) {
+
+        for (i = 0; i < width + right; i++)
+            s[depth - 1][offset + left + width/2 + i] = '-';
+
+        s[depth - 1][offset + left + width/2] = '.';
+
+    } else if (depth && !is_left) {
+
+        for (i = 0; i < left + width; i++)
+            s[depth - 1][offset - width/2 + i] = '-';
+
+        s[depth - 1][offset + left + width/2] = '.';
+    }
+#else
+    for (i = 0; i < width; i++)
+        s[2 * depth][offset + left + i] = b[i];
+
+    if (depth && is_left) {
+
+        for (i = 0; i < width + right; i++)
+            s[2 * depth - 1][offset + left + width/2 + i] = '-';
+
+        s[2 * depth - 1][offset + left + width/2] = '+';
+        s[2 * depth - 1][offset + left + width + right + width/2] = '+';
+
+    } else if (depth && !is_left) {
+
+        for (i = 0; i < left + width; i++)
+            s[2 * depth - 1][offset - width/2 + i] = '-';
+
+        s[2 * depth - 1][offset + left + width/2] = '+';
+        s[2 * depth - 1][offset - width/2 - 1] = '+';
+    }
+#endif
+
+    return left + width + right;
+}
+
+int print_t(Node *tree)
+{
+
+	int i = 0;
+
+    char s[20][255];
+    for (i = 0; i < 20; i++)
+        sprintf(s[i], "%80s", " ");
+
+    _print_t(tree, 0, 0, 0, s);
+
+    for (i = 0; i < 20; i++)
+        printf("%s\n", s[i]);
+}
+
 int main (int argc, char** argv) {
 
 
@@ -192,19 +264,23 @@ int main (int argc, char** argv) {
     insertTree(&__tree, 4);
     insertTree(&__tree, 13);
     insertTree(&__tree, 8);
-    insertTree(&__tree, 10);
+   // insertTree(&__tree, 10);
     insertTree(&__tree, 7);
     insertTree(&__tree, 2);
     insertTree(&__tree, 1);
     insertTree(&__tree, 3);
+     insertTree(&__tree, 14);
+     print_t(__tree.root);
 	printf("\n");
 	printf("\n");
 	printf("\n");
-	preOrder(__tree.root);
-	purge(&__tree, 8);
+	//preOrder(__tree.root);
+	purge(&__tree, 9);
 	printf("\n");
 	printf("\n");
 	printf("\n");
-	preOrder(__tree.root);
+	//preOrder(__tree.root);
+	print_t(__tree.root);
+
 
 }
