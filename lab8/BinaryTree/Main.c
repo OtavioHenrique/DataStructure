@@ -151,15 +151,50 @@ int _remove (Tree* __tree, Node* __node) {
 		
 	} else {
 
-		Node* aux = __node->right;
+		printf("Flag\n");
 
-		if (__node->value < __father->value){
-			__father->left = aux;
-			aux->right = __node->right;
+		Node* aux = __node->right; 
+		printf("Aux Value: %d\n", aux->value);
+
+		if (aux->left == NULL) {
+			if(__father->value > aux->value) {
+				__father->left = aux;
+				aux->left = __node->left;
+			}
+			else {
+				__father->right = aux;
+					aux->left = __node->left;
+			}
+
 		} else {
-			__father->right = aux;
-			aux->right = __node->right;
-		} 
+
+			Node* son = aux->left;
+			//son->right = NULL;
+
+			while(son->left != NULL)
+				son = son->left;
+
+			son->father->left = son->right;			
+			son->father = __father;
+			aux->father = son;
+			//printf("Aux Value: %d\n", aux->value);
+			
+			//Node* test = aux->father;
+			//printf("Father Value: %d\n", test->value);
+			if(__father->value > son->value) {
+				__father->left = son;
+				son->left = __node->left;
+			}
+			else {
+				__father->right = son;
+				son->left = __node->left;	
+				__node->left->father = son;
+				son->right = aux;	
+			}
+
+
+
+		}
 
 	__node = NULL;
 	__tree->total--;
@@ -262,14 +297,17 @@ int main (int argc, char** argv) {
     insertTree(&__tree, 5);
     insertTree(&__tree, 9);
     insertTree(&__tree, 4);
+    insertTree(&__tree, 15);
+    insertTree(&__tree, 14);
     insertTree(&__tree, 13);
+    insertTree(&__tree, 10);
     insertTree(&__tree, 8);
-   // insertTree(&__tree, 10);
+   
     insertTree(&__tree, 7);
     insertTree(&__tree, 2);
     insertTree(&__tree, 1);
     insertTree(&__tree, 3);
-     insertTree(&__tree, 14);
+     insertTree(&__tree, 20);
      print_t(__tree.root);
 	printf("\n");
 	printf("\n");
