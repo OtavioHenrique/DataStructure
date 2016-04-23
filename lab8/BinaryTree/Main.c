@@ -151,10 +151,7 @@ int _remove (Tree* __tree, Node* __node) {
 		
 	} else {
 
-		printf("Flag\n");
-
 		Node* aux = __node->right; 
-		printf("Aux Value: %d\n", aux->value);
 
 		if (aux->left == NULL) {
 			if(__father->value > aux->value) {
@@ -169,7 +166,6 @@ int _remove (Tree* __tree, Node* __node) {
 		} else {
 
 			Node* son = aux->left;
-			//son->right = NULL;
 
 			while(son->left != NULL)
 				son = son->left;
@@ -177,10 +173,7 @@ int _remove (Tree* __tree, Node* __node) {
 			son->father->left = son->right;			
 			son->father = __father;
 			aux->father = son;
-			//printf("Aux Value: %d\n", aux->value);
-			
-			//Node* test = aux->father;
-			//printf("Father Value: %d\n", test->value);
+
 			if(__father->value > son->value) {
 				__father->left = son;
 				son->left = __node->left;
@@ -217,8 +210,7 @@ void inOrder(Node* __node) {
 }
 
 
-int _print_t(Node *tree, int is_left, int offset, int depth, char s[20][255])
-{
+int _print_t(Node *tree, int is_left, int offset, int depth, char s[20][255]) {
     char b[20];
     int width = 5;
     int i = 0;
@@ -273,8 +265,7 @@ int _print_t(Node *tree, int is_left, int offset, int depth, char s[20][255])
     return left + width + right;
 }
 
-int print_t(Node *tree)
-{
+int print_t(Node *tree) {
 
 	int i = 0;
 
@@ -288,37 +279,125 @@ int print_t(Node *tree)
         printf("%s\n", s[i]);
 }
 
+void exampleTree () {
+
+	Tree tree;
+
+	initTree(&tree);
+    insertTree(&tree, 5);
+    insertTree(&tree, 9);
+    insertTree(&tree, 4);
+    insertTree(&tree, 15);
+    insertTree(&tree, 14);
+    insertTree(&tree, 13);
+    insertTree(&tree, 10);
+    insertTree(&tree, 8);
+   
+    insertTree(&tree, 7);
+    insertTree(&tree, 2);
+    insertTree(&tree, 1);
+    insertTree(&tree, 3);
+    insertTree(&tree, 20);
+    printf("\n");
+    print_t(tree.root);
+	
+	printf("\n");
+	printf("Removing node 9: \n");
+	
+	purge(&tree, 9);
+	printf("\n");
+	printf("\n");
+	print_t(tree.root);
+
+
+}
+
+void askInput(Tree* __tree) {
+	int i,num;
+	printf("How many numbers do you want to insert?\n");
+	scanf("%d", &num);
+	printf("\n");
+	for(i=0; i < num; i++){
+		int aux;
+		if (i == 0)
+			printf("Your root: ");
+		else 
+			printf("Number %d : ", i);
+
+		scanf("%d", &aux);
+		insertTree(__tree, aux);	
+	}
+
+}
+
+void askSearch (Tree* __tree) {
+
+	int searched;
+	Node* aux;
+	printf("\n");
+	printf("What number do you want to find?\n");
+	scanf("%d", &searched);
+	printf("\n");
+	aux = search(__tree, searched);
+
+	if (&aux != NULL)
+		printf("This value exists on tree\n");
+}
+
+void askDelete (Tree* __tree) {
+	
+	int delete;
+	printf("\n");
+	printf("What number/node do you want to delete?\n");
+	scanf("%d", &delete);
+	printf("\n");
+	purge(__tree, delete);
+
+}
+
 int main (int argc, char** argv) {
 
 
 	Tree __tree;
-
 	initTree(&__tree);
-    insertTree(&__tree, 5);
-    insertTree(&__tree, 9);
-    insertTree(&__tree, 4);
-    insertTree(&__tree, 15);
-    insertTree(&__tree, 14);
-    insertTree(&__tree, 13);
-    insertTree(&__tree, 10);
-    insertTree(&__tree, 8);
-   
-    insertTree(&__tree, 7);
-    insertTree(&__tree, 2);
-    insertTree(&__tree, 1);
-    insertTree(&__tree, 3);
-     insertTree(&__tree, 20);
-     print_t(__tree.root);
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	//preOrder(__tree.root);
-	purge(&__tree, 9);
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	//preOrder(__tree.root);
-	print_t(__tree.root);
+	int x;
 
+	do {
+
+		printf("\n");
+		printf("-------------Binary Tree -------------------\n");
+		printf("\n");
+		printf("\n");
+		printf("1. View Tree\n");
+		printf("2. Insert numbers\n");
+		printf("3. Search for number\n");
+		printf("4. Delete number/node\n");
+		printf("5. View tree exemple\n");
+		printf("6. Exit\n");
+		scanf("%d", &x);
+		switch(x) {
+			case 1:
+				print_t(__tree.root);
+				break;
+			case 2:
+				askInput(&__tree);
+				break;
+			case 3:
+				askSearch(&__tree);
+				break;
+			case 4:
+				askDelete(&__tree);
+				break;
+			case 5:
+				exampleTree();
+				break;
+			case 6:
+				exit(0);
+				break;
+			default:
+				printf("Enter with valid option\n");
+		}
+
+	} while(x);
 
 }
