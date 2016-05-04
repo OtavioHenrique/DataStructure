@@ -67,16 +67,65 @@ int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on lin
 
 }
 int RemoveList(tLde* _list, int _key){ //Function to remove item from linked list
+
+	node* previus = NULL;
+	node* current = _list->first;
+
+	if (current->content.value == _key) {
+		free(current);
+	} else {
+		while(current != NULL && current->content.value != _key) {
+			previus = current;
+			current = current->next;
+			}
+		}
+	
+
+	if (current->next == NULL){
+		free(current);
+		return 1;
+	} else {
+		previus->next = current->next;
+		free(current);
+		return 1;
+	}
+
+	return -1;
+
 }
 node* searchList(tLde* _list, int _key){ //Function to search for node on linked list
+
+	node* current = _list->first;
+
+	if (current->content.value == _key) {
+		return current;
+	} else {
+		while(current != NULL) {
+			current = current->next;
+			if (current->content.value == _key)
+				return current;
+		}
+		
+	}
+
+	return NULL;
+
 }
+
 void cleanList(tLde* _list){ //Method to clean linked list
+	
+	node* current = _list->first;
+	node* aux = current;
+
+	while(aux != NULL) {
+		aux = current->next;			
+		free(current);
+	}
 } 
+
 int hashFunc(int _value, int _size){ //Hash Function (Return key)
 	return _value % _size;
 }
-
-
 
 tHashTable* createHashTable(int _size){ //Method to create hash table
 
@@ -102,14 +151,25 @@ int insertHash(tHashItem _item, tHashTable* h){ //method to insert number on has
 
 	int answer = InsertList(&(h->table[_item.key]), _item);
 
-	prints(&(h->table[_item.key]));
+	//prints(&(h->table[_item.key]));
 
 }
 int removeHash(int key, tHashTable* h){ //Method to remove hash item
+
 }
 void destroyHash(tHashTable *h){ //Method to destroy hash
+
+	int i;
+
+	for(i=0; i < h->size; i++) {
+		free(&(h->table[i]));
+	}
+
+	free(h);
+
 }
 tHashItem* searchHash(tHashTable* h, int key){ //Function to search hash item
+
 }
 int main (int argc, char** argv){
 
