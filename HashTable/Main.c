@@ -24,16 +24,59 @@ typedef struct { //Hash Table struct
  tLde* table;
 }tHashTable; 
 
-int InsertList(tLde* lista, tHashItem item){ //Function to insert number on linked list
+/* void prints(tLde* _list){
+
+	node* ptrAtual = _list->first;
+
+    while (ptrAtual != NULL) {
+    	printf("=======================================Node=====================\n");
+    	printf("Key: %d\n", ptrAtual->content.key);
+    	printf("Value: %d\n", ptrAtual->content.value);
+    	ptrAtual = ptrAtual->next;
+    	printf("======================Final================\n");
+    } 
+}*/
+
+int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on linked list
+	
+	node* previus = NULL;
+	node* current = _list->first;
+
+	node* item = malloc(sizeof(node));
+	item->content = _item;
+	item->next = NULL;
+
+	if(_list->total == 0) {
+		_list->first = item;
+		_list->total++;
+		printf("Entrei5\n");
+		return 1;
+	} else {
+		while(current != NULL) {
+			previus = current;
+			current = current->next;
+		}
+
+		current = item;
+		previus->next = item;
+		_list->total++;
+		return 1;
+	}
+	
+	return -1;
+
 }
-int RemoveList(tLde *lista, int chave){ //Function to remove item from linked list
+int RemoveList(tLde* _list, int _key){ //Function to remove item from linked list
 }
-node* searchList(tLde* lista, int chave){ //Function to search for node on linked list
+node* searchList(tLde* _list, int _key){ //Function to search for node on linked list
 }
-void cleanList(tLde*lista){ //Method to clean linked list
+void cleanList(tLde* _list){ //Method to clean linked list
 } 
-int hashFunc(int chave, int tamanho){ //Hash Function (Return key)
+int hashFunc(int _value, int _size){ //Hash Function (Return key)
+	return _value % _size;
 }
+
+
 
 tHashTable* createHashTable(int _size){ //Method to create hash table
 
@@ -52,7 +95,15 @@ tHashTable* createHashTable(int _size){ //Method to create hash table
 	return hashTable;
 
 }
-int insertHash(tHashItem item, tHashTable* h){ //method to insert number on hash
+int insertHash(tHashItem _item, tHashTable* h){ //method to insert number on hash
+	printf("Entrei\n");
+	printf("Key: %d\n", _item.key);
+	printf("Value: %d\n", _item.value);
+
+	int answer = InsertList(&(h->table[_item.key]), _item);
+
+	prints(&(h->table[_item.key]));
+
 }
 int removeHash(int key, tHashTable* h){ //Method to remove hash item
 }
@@ -63,7 +114,31 @@ tHashItem* searchHash(tHashTable* h, int key){ //Function to search hash item
 int main (int argc, char** argv){
 
 	int size = 10;
-
 	tHashTable* hash = createHashTable(size);
+
+	int answer;
+	tHashItem num1;
+	num1.value = 15;
+	num1.key = hashFunc(num1.value, hash->size);
+
+	answer = insertHash(num1, hash);
+
+	tHashItem num2;
+	num2.value = 7;
+	num2.key = hashFunc(num2.value, hash->size);
+
+	answer = insertHash(num2, hash);
+
+	tHashItem num3;
+	num3.value = 2;
+	num3.key = hashFunc(num3.value, hash->size);
+
+	answer = insertHash(num3, hash);
+
+	tHashItem num4;
+	num4.value = 12;
+	num4.key = hashFunc(num4.value, hash->size);
+
+	answer = insertHash(num4, hash);
 
 }
