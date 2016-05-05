@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct { //Hash Item struct
  int key;
@@ -24,19 +25,15 @@ typedef struct { //Hash Table struct
  tLde* table;
 } tHashTable; 
 
-void prints(tLde* _list){
+void clear(){
+    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+        system("clear");
+    #endif
 
-	node* ptrAtual = _list->first;
-
-    while (ptrAtual != NULL) {
-    	printf("=======================================Node=====================\n");
-    	printf("Key: %d\n", ptrAtual->content.key);
-    	printf("Value: %d\n", ptrAtual->content.value);
-    	ptrAtual = ptrAtual->next;
-    	printf("======================Final================\n");
-    } 
+    #if defined(_WIN32) || defined(_WIN64)
+        system("cls");
+    #endif
 }
-
 int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on linked list
 	
 	node* previus = NULL;
@@ -66,6 +63,22 @@ int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on lin
 
 }
 
+int checkFull(tHashTable* hashTable) {
+	int i;
+	int total = 0;
+
+	for(i=0; i < hashTable->size; i++){ 
+		if (hashTable->table[i].first != NULL)
+			total +=1;
+	}
+
+	if (total == hashTable->size)
+		return -1;
+	else
+		return 1;
+
+}
+
 int countNumbers(tHashTable* hashTable){
 	int i;
 	int total = 0;
@@ -73,7 +86,6 @@ int countNumbers(tHashTable* hashTable){
 	for(i=0; i < hashTable->size; i++){ 
 		total = total + hashTable->table[i].total;
 	} 
-
 	return total;
 }
 
@@ -184,7 +196,7 @@ int insertHash(tHashItem _item, tHashTable* h){ //method to insert number on has
 	else 
 		printf("Error 001 - Failed while inserting hash item\n");
 
-	//prints(&(h->table[_item.key]));
+
 
 }
 
@@ -218,10 +230,12 @@ tHashItem* searchHash(tHashTable* h, int key){ //Function to search hash item
 
 	if(answer != NULL) {
 		return &(answer->content);
+	}else {
+		return NULL;
 	}
 }
 
-void test(tHashTable* hash){
+void test(tHashTable* hash){ //This test works with hash size equal 10
 	int answer;
 	tHashItem num1;
 	num1.value = 15;
@@ -274,10 +288,142 @@ void test(tHashTable* hash){
 	printf("hash total: %d\n", hash->total);
 
 }
-int main (int argc, char** argv){
 
-	int size = 10;
-	tHashTable* hash = createHashTable(size);
-	test(hash);
+
+int main (int argc, char** argv){
+	int x;
+	int size;
+	tHashTable* hash;
+	//test(hash);
+
+	do{
+		clear();
+		printf("\n");
+		printf("\n");
+		printf("Hash Example Program\n");
+		printf("\n");
+		printf("\n");
+		printf("\n");
+		printf("1 - Create Hash\n");
+		printf("2 - Insert Numbers\n");
+		printf("3 - Remove Number\n");
+		printf("4 - Search for number\n");
+		printf("5 - Print total of numbers in hash\n");
+		printf("\n");
+		printf("\n");
+		printf("6 - Destroy hash\n");
+
+		scanf("%d", &x);
+
+		switch(x) {
+			case 1:
+			{	
+				clear();
+				printf("\n");
+				printf("Hash Example Program\n");
+				printf("\n");
+				printf("Enter with the size of your hash: ");
+				scanf("%d", &size);
+				hash = createHashTable(size);
+				clear();
+				if (hash != NULL)
+					printf("Successful Created\n");
+				
+				
+				break;
+			}
+			case 2:
+			{
+				int aux,i;
+				clear();
+				printf("\n");
+				printf("Hash Example Program\n");
+				printf("\n");
+				printf("How much numbers do you want to insert on your hash: ");
+				scanf("%d", &aux);
+				
+				printf("Insert: \n");
+
+				for(i=0; i < aux; i ++) {
+					int number, answer;
+					printf("Number %d: \n", i+1);
+					scanf("%d", &number);
+
+					tHashItem num1;
+					num1.value = number;
+					num1.key = hashFunc(num1.value, hash->size);
+
+					answer = insertHash(num1, hash);
+				}
+
+				
+				break;
+			}
+			case 3:
+			{
+				int aux;
+
+				clear();
+				printf("\n");
+				printf("Hash Example Program\n");
+				printf("\n");
+				printf("Wich number do you want to remove from your hash: ");
+				scanf("%d", &aux);
+				
+				int answer = removeHash(aux, hash);
+
+				
+				break;
+			}
+			case 4:
+			{
+				int aux;
+
+				clear();
+				printf("\n");
+				printf("Hash Example Program\n");
+				printf("\n");
+				printf("Wich number do you want to search if exists: ");
+				scanf("%d", &aux);
+
+				tHashItem* number = searchHash(hash, aux);
+
+				if(number != NULL) 
+					printf("This number exists\n");
+				else 
+					printf("This number dosent exists\n");
+
+				
+				break;
+			}
+			case 5:
+			{
+				printf("Hash is now with %d numbers\n", countNumbers(hash));
+				break;
+			}
+			case 6:
+			{	
+				int no;
+
+
+				clear();
+				printf("Are you sure? 1. Yes / 2. No\n");
+				scanf("%d", &no);
+				if (no == 1) {
+					destroyHash(hash);
+				}
+				else {
+				
+					break;
+				}
+				
+				break;
+			}
+			default:
+				printf("Please enter with valid option\n");
+		}
+
+
+	}while(x);
 	
 }
