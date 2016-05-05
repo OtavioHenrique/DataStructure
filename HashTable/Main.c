@@ -22,7 +22,7 @@ typedef struct { //Hash Table struct
  int size;
  int total;
  tLde* table;
-}tHashTable; 
+} tHashTable; 
 
 void prints(tLde* _list){
 
@@ -49,7 +49,6 @@ int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on lin
 	if(_list->total == 0) {
 		_list->first = item;
 		_list->total++;
-		printf("Entrei5\n");
 		return 1;
 	} else {
 		while(current != NULL) {
@@ -66,6 +65,18 @@ int InsertList(tLde* _list, tHashItem _item){ //Function to insert number on lin
 	return -1;
 
 }
+
+int countNumbers(tHashTable* hashTable){
+	int i;
+	int total = 0;
+
+	for(i=0; i < hashTable->size; i++){ 
+		total = total + hashTable->table[i].total;
+	} 
+
+	return total;
+}
+
 int RemoveList(tLde* _list, int _key){ //Function to remove item from linked list
 
 	node* previus = NULL;
@@ -74,6 +85,7 @@ int RemoveList(tLde* _list, int _key){ //Function to remove item from linked lis
 	if (current->content.value == _key) {
 		_list->first = current->next;
 		free(current);
+		_list->total--;
 		return 1;
 	} else {
 		while(current != NULL && current->content.value != _key) {
@@ -86,16 +98,19 @@ int RemoveList(tLde* _list, int _key){ //Function to remove item from linked lis
 	if (current->next == NULL){
 		previus->next = NULL;
 		free(current);
+		_list->total--;
 		return 1;
 	} else {
 		previus->next = current->next;
 		free(current);
+		_list->total--;
 		return 1;
 	}
 
 	return -1;
 
 }
+
 node* searchList(tLde* _list, int _key){ //Function to search for node on linked list
 
 	node* current = _list->first;
@@ -121,6 +136,8 @@ void cleanList(tLde* _list){ //Method to clean linked list
 	node* aux = current;
 
 	while(aux != NULL) {
+		if(current->next != NULL)
+			current = current->next;
 		aux = current->next;			
 		free(current);
 	}
@@ -147,38 +164,54 @@ tHashTable* createHashTable(int _size){ //Method to create hash table
 	return hashTable;
 
 }
+
 int insertHash(tHashItem _item, tHashTable* h){ //method to insert number on hash
-	int answer = InsertList(&(h->table[_item.key]), _item);
-	if (answer == 1)
+	
+	int answer;
+
+	if(h != NULL){
+		answer = InsertList(&(h->table[_item.key]), _item);
+	}
+	else{
+		printf("Hash doesnt exist!\n");
+		return -1;
+	}
+
+	if (answer == 1){
 		printf("Successful Insertion of the number: %d\n", _item.value);
+		printf("Hash is now with %d numbers\n", countNumbers(h));
+	}
 	else 
 		printf("Error 001 - Failed while inserting hash item\n");
 
-	prints(&(h->table[_item.key]));
+	//prints(&(h->table[_item.key]));
 
 }
+
 int removeHash(int key, tHashTable* h){ //Method to remove hash item
 	int aux = hashFunc(key, h->size);
 
 	int answer = RemoveList(&(h->table[aux]), key);
 	if (answer == 1) 
-		printf("Remove Successful\n");
+		printf("Successful remove of number %d\n", key);
 	else 
 		printf("Error 003 - Failed while removing node from list on remove hash method\n");
 
 
 }
+
 void destroyHash(tHashTable *h){ //Method to destroy hash
 
 	int i;
-	/*
+	
 	for(i=0; i < h->size; i++) {
-		free(&(h->table[i]));
-	}   BUG HERE */
+		cleanList(&(h->table[i]));
+	}  
 
 	free(h);
 	printf("Hash Destroyed\n");
 }
+
 tHashItem* searchHash(tHashTable* h, int key){ //Function to search hash item
 	int aux = hashFunc(key, h->size);
 	node* answer = searchList(&(h->table[aux]), key);
@@ -231,13 +264,20 @@ void test(tHashTable* hash){
 
 	destroyHash(hash);
 
+	tHashItem num7;
+	num7.value = 22;
+	num7.key = hashFunc(num7.value, hash->size);
+
+	answer = insertHash(num7, hash);
+
+	printf("hash size: %d\n", hash->size);
+	printf("hash total: %d\n", hash->total);
 
 }
 int main (int argc, char** argv){
 
 	int size = 10;
 	tHashTable* hash = createHashTable(size);
-
 	test(hash);
-
+	
 }
