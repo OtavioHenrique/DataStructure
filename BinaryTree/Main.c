@@ -78,7 +78,7 @@ int purge(Tree* __tree, int value){
 
 int contsons(Node* __node) {
 
-	int cont;
+	int cont = 0;
 
 	if (__node->left != NULL && __node->right != NULL) {
 		cont += 2;
