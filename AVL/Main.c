@@ -123,8 +123,6 @@ int _remove (Tree* __tree, Node* __node) {
 	int sons = contsons(__node);
 	Node* __father = searchFather(__tree, __node->value);
 
-	printf("Sons: %d\n", sons);
-
 	if (sons == 0) {
 		if (__node->value > __father->value) 
 			__father->right = NULL;
@@ -286,53 +284,36 @@ void exampleTree () {
 	Tree tree;
 
 	initTree(&tree);
-    insertTree(&tree, 15);
-    insertTree(&tree, 10);
-    insertTree(&tree, 25);
-    insertTree(&tree, 7);
-    insertTree(&tree, 12);
-    insertTree(&tree, 23);
-    insertTree(&tree, 31);
-    insertTree(&tree, 2);
-   
-    insertTree(&tree, 8);
-    insertTree(&tree, 14);
-    insertTree(&tree, 35);
-    insertTree(&tree, 1);
     insertTree(&tree, 5);
     insertTree(&tree, 9);
+    insertTree(&tree, 4);
+    insertTree(&tree, 15);
+    insertTree(&tree, 14);
+    insertTree(&tree, 13);
+    insertTree(&tree, 10);
+    insertTree(&tree, 8);
+   
+    insertTree(&tree, 7);
+    insertTree(&tree, 2);
+    insertTree(&tree, 1);
+    insertTree(&tree, 3);
     insertTree(&tree, 20);
-    insertTree(&tree, 24);
-    insertTree(&tree, 28);
-    insertTree(&tree, 26);
-    insertTree(&tree, 27);
     printf("\n");
     print_t(tree.root);
 	
 	printf("\n");
+	printf("Removing node 9: \n");
 	
-	purge(&tree, 7);
-	printf("\n");
-	printf("\n");
-	print_t(tree.root);
-	/*
-	purge(&tree, 10);
-	printf("\n");
-	printf("\n");
-	print_t(tree.root);
-
-	purge(&tree, 25);
-	printf("\n");
-	printf("\n");
-	print_t(tree.root);
-	*/
-		printf("Removing node 9: \n");
-
 	purge(&tree, 9);
 	printf("\n");
 	printf("\n");
 	print_t(tree.root);
 
+
+	purge(&tree, 7);
+	printf("\n");
+	printf("\n");
+	print_t(tree.root);
 
 }
 
